@@ -1,20 +1,8 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+<p align="center">
+  <img src="./Preview.gif" alt="Prism-Check-CAPTCHA preview" width="1080" />
+</p>
 
-# Run and deploy your AI Studio app
+## **Infinite Bookshelf**
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/43e1836c-ad8b-497c-932c-57a104fb6797
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+All your books, laid out on one endless shelf. Tap any one and your notes for that book pop up. Keep scrolling, keep exploring.
+It's an experiment — just seeing how fun it can be to browse your own library this way.
