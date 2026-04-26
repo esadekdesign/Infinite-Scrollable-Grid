@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-[#FDF7EA] text-[#1a1a1a] overflow-hidden selection:bg-black selection:text-white;
+    font-family: var(--font-sans);
+  }
+}
+
+@layer components {
+  .grid-container {
+    @apply fixed inset-0 w-full h-full cursor-grab active:cursor-grabbing;
+  }
+
+  .grid-container.has-hover .grid-item {
+    opacity: 0.25;
+  }
+
+  .grid-container.has-hover .grid-item:hover {
+    opacity: 1;
+  }
+
+  .grid-item {
+    @apply absolute flex flex-col items-center p-0;
+    width: 150px;
+    will-change: transform;
+    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Book Effect Styles */
+  .book-items {
+    @apply relative cursor-default p-0 m-0 w-full;
+    display: grid;
+    perspective: 2000px;
+  }
+
+  .main-book-wrap {
+    @apply relative w-full;
+    transform-style: preserve-3d;
+  }
+
+  .book-cover {
+    @apply relative w-full;
+    transform-style: preserve-3d;
+  }
+
+  .book-cover .book-inside {
+    @apply absolute top-[1%] left-1.5 border border-gray-300 rounded-[2px_6px_6px_2px] bg-white;
+    width: 96%;
+    height: 98%;
+    box-shadow: 10px 40px 40px -10px rgba(0, 0, 0, 0.15), 
+                inset -1px 0 0 #e5e5e5,
+                inset -2px 0 0 #dbdbdb, 
+                inset -3px 0 0 white, 
+                inset -4px 0 0 #dbdbdb,
+                inset -5px 0 0 white, 
+                inset -6px 0 0 #dbdbdb, 
+                inset -7px 0 0 white,
+                inset -8px 0 0 #dbdbdb;
+    z-index: 1;
+  }
+
+  .book-cover .book-image {
+    @apply relative rounded-[2px_6px_6px_2px] transition-all duration-500 ease-out cursor-pointer overflow-hidden bg-[#eee];
+    line-height: 0;
+    z-index: 2;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1),
+                15px 15px 30px rgba(0, 0, 0, 0.1);
+    transform: rotateY(-20deg) translateX(-10px) scaleX(0.95);
+    transform-origin: left center;
+  }
+
+  .book-image img {
+    @apply w-full h-auto object-cover rounded-[2px_6px_6px_2px] opacity-0 transition-opacity duration-500;
+    aspect-ratio: 2/3;
+  }
+
+  .book-image img.loaded {
+    @apply opacity-100;
+  }
+
+  .book-image:hover {
+    transform: rotateY(0deg) translateX(0px) scaleX(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .effect {
+    @apply absolute top-0 left-0 w-[20px] h-full z-[5] transition-all duration-500;
+    background: linear-gradient(to right, 
+      rgba(0,0,0,0.1) 0%, 
+      rgba(0,0,0,0.05) 15%,
+      rgba(255,255,255,0.1) 25%,
+      rgba(0,0,0,0) 100%
+    );
+  }
+
+  .light {
+    @apply absolute w-full h-full top-0 left-0 opacity-20 transition-all duration-500 z-[4];
+    background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+  }
+
+  .book-image:hover .effect {
+    @apply opacity-50;
+  }
+
+  .grid-item-caption {
+    @apply mt-6 text-[14px] text-[#0F0F0F] text-center leading-tight whitespace-normal px-2;
+    max-width: 150px;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    word-wrap: break-word;
+  }
+
+  .refresh-button {
+    @apply fixed bottom-8 right-8 z-50 p-4 bg-white border border-black/10 rounded-full shadow-lg 
+           hover:bg-black hover:text-white transition-all duration-300 cursor-pointer flex items-center justify-center;
+  }
+
+  .refresh-button:active {
+    @apply scale-90;
+  }
+
+  .refresh-button.loading svg {
+    @apply animate-spin;
+  }
+
+  /* Modal & Notebook Styles */
+  .modal-overlay {
+    @apply fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-500;
+  }
+
+  .modal-overlay.hidden {
+    @apply opacity-0 pointer-events-none;
+    display: none;
+  }
+
+  .modal-overlay.flex {
+    @apply opacity-100 pointer-events-auto;
+    display: flex;
+  }
+
+  .modal-container {
+    @apply relative w-full max-w-3xl bg-[#F3F1ED] shadow-2xl rounded-[40px] overflow-hidden flex flex-col transform transition-all duration-500 ease-out;
+    max-height: 85vh;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .modal-overlay.flex .modal-container {
+    @apply scale-100 opacity-100;
+  }
+
+  .modal-overlay.hidden .modal-container {
+    @apply scale-95 opacity-0;
+  }
+
+  .notebook-paper {
+    @apply p-0;
+  }
+
+  .notebook-rings {
+    @apply absolute left-10 top-0 bottom-0 w-px bg-red-200/50 z-10;
+    box-shadow: 1px 0 0 rgba(239, 68, 68, 0.1);
+  }
+
+  .modal-header {
+    @apply sticky top-0 bg-[#F3F1ED] px-14 py-6 border-b border-black/5 flex items-center justify-between z-20;
+  }
+
+  .search-bar {
+    @apply relative flex items-center bg-white/60 rounded-2xl px-5 py-3 w-full max-w-xs transition-all duration-300 focus-within:bg-white;
+  }
+
+  .search-bar svg {
+    @apply text-black/40 mr-3;
+  }
+
+  .search-input {
+    @apply bg-transparent outline-none text-[15px] w-full font-mono;
+  }
+
+  .header-actions {
+    @apply flex items-center gap-6 ml-6 shrink-0;
+  }
+
+  .share-button {
+    @apply flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/60 text-sm font-sans font-semibold hover:bg-white transition-all duration-300;
+  }
+
+  .close-button-wrapper {
+    @apply w-12 h-12 flex items-center justify-center rounded-full bg-white/60 text-black/60 hover:text-black hover:bg-white transition-all duration-300 cursor-pointer;
+  }
+
+  .close-button {
+    @apply w-5 h-5;
+  }
+
+  .modal-scroll-area {
+    @apply overflow-y-auto px-14 py-10 bg-[#FFFFFB];
+    scroll-behavior: smooth;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 100% 2rem;
+    line-height: 2rem;
+  }
+
+  .modal-scroll-area::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .modal-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .modal-scroll-area::-webkit-scrollbar-thumb {
+    @apply bg-black/10 rounded-full hover:bg-black/20;
+  }
+
+  .modal-content {
+    @apply max-w-prose mx-auto pt-2;
+  }
+
+  .formatting-bar {
+    @apply flex items-center justify-between mb-6 bg-black/5 p-1 rounded-2xl w-full relative;
+  }
+
+  .save-status {
+    @apply absolute -top-8 left-0 text-[11px] font-mono font-medium text-green-600 opacity-0 transition-opacity duration-300;
+  }
+
+  .save-status.visible {
+    @apply opacity-100;
+  }
+
+  .formatting-btn {
+    @apply flex-1 h-10 flex items-center justify-center rounded-xl text-black/50 hover:bg-black/5 hover:text-black transition-all cursor-pointer;
+  }
+
+  .formatting-btn svg {
+    @apply w-4 h-4;
+  }
+
+  .formatting-btn.active {
+    @apply bg-white shadow-sm text-blue-600;
+  }
+
+  .formatting-divider {
+    @apply w-px h-6 bg-black/10 mx-1;
+  }
+
+  .modal-book-title {
+    @apply text-4xl font-bold tracking-tight mb-3;
+  }
+
+  .modal-book-author {
+    @apply text-base font-mono font-medium text-black/40 mb-12;
+  }
+
+  .notebook-body {
+    @apply text-[17px] text-black/90 space-y-8 outline-none min-h-[300px];
+    font-family: var(--font-sans);
+  }
+
+  .notebook-body ul {
+    @apply list-disc list-outside ml-6 space-y-4;
+  }
+
+  .highlight-yellow {
+    @apply bg-yellow-200/80;
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .highlight-yellow.active-search {
+    @apply bg-yellow-400 ring-2 ring-yellow-600/20 shadow-sm;
+  }
+
+  .highlight-blue {
+    @apply bg-blue-200/80;
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    border-radius: 4px;
+  }
+
+  .pagination-controls {
+    @apply flex items-center justify-center gap-4 mt-6 mb-2 opacity-60;
+  }
+
+  .page-arrow {
+    @apply w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-black/5 transition-colors cursor-pointer text-black/60 hover:text-black;
+  }
+
+  .page-number {
+    @apply font-mono text-[13px] tracking-widest uppercase;
+  }
+}
